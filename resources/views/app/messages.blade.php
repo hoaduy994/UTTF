@@ -59,7 +59,7 @@
 			</div>
 		@else
 			<p>Bạn chưa có bạn bè nào để nhắn tin :(</p>
-			<p>Nhưng đừng lo! <a href="mailto:tungnguyenls2008@gmail.com">tungnguyenls2008@gmail.com</a> Hãy gửi mail cho tôi bất cứ khi nào.</p>
+			<p>Nhưng đừng lo! <a href="mailto:hoaduy994@gmail.com">hoaduy994@gmail.com</a> Hãy gửi mail cho tôi bất cứ khi nào.</p>
 		@endif
 			
 		</div>

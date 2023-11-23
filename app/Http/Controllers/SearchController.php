@@ -12,8 +12,8 @@ class SearchController extends Controller
     public function search(){
     	$q = Request::input('q');
 
-    	if (strlen($q) < 3){
-    		return 'Chuỗi tìm kiếm phải có ít nhất 3 kí tự.';
+    	if (strlen($q) < 1){
+    		return 'Chuỗi tìm kiếm phải có ít nhất 1 kí tự.';
     	}
     	
     	$users = User::where(DB::raw("CONCAT(`first_name`, ' ', `last_name`)"), 'LIKE', '%'.$q.'%')->whereNotIn('id', [Auth::user()->id])->get();

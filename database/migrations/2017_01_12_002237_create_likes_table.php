@@ -21,23 +21,7 @@ class CreateLikesTable extends Migration
             $table->timestamps();
         });
 
-        DB::table('likes')->insert(
-            array(
-                array('user_id' => '3', 'likeable_id' => '1', 'likeable_type' => 'App\Post'),
-                array('user_id' => '4', 'likeable_id' => '1', 'likeable_type' => 'App\Post'),
-                array('user_id' => '5', 'likeable_id' => '1', 'likeable_type' => 'App\Post'),
-                array('user_id' => '6', 'likeable_id' => '1', 'likeable_type' => 'App\Post'),
-
-                array('user_id' => '3', 'likeable_id' => '2', 'likeable_type' => 'App\Post'),
-                array('user_id' => '4', 'likeable_id' => '2', 'likeable_type' => 'App\Post'),
-                array('user_id' => '5', 'likeable_id' => '2', 'likeable_type' => 'App\Post'),
-                array('user_id' => '6', 'likeable_id' => '2', 'likeable_type' => 'App\Post'),
-                array('user_id' => '7', 'likeable_id' => '2', 'likeable_type' => 'App\Post'),
-                array('user_id' => '8', 'likeable_id' => '2', 'likeable_type' => 'App\Post'),
-                array('user_id' => '9', 'likeable_id' => '2', 'likeable_type' => 'App\Post'),
-                array('user_id' => '10', 'likeable_id' => '2', 'likeable_type' => 'App\Post'),
-            )
-        );
+       
     }
 
     /**

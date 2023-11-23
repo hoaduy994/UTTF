@@ -11,15 +11,17 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
+
 Route::get('/', [
-	'uses' => 'HomeController@index',
-	'as' => 'index'
+    'uses' => 'HomeController@index',
+    'as' => 'index'
 ]);
 
 
 //Auth::routes();
 
-Route::group(['middleware' => 'web'], function(){
+Route::group(['middleware' => 'web'], function () {
 
     Route::post('login/', [
         'uses' => 'LoginController@login',
@@ -30,13 +32,12 @@ Route::group(['middleware' => 'web'], function(){
         'uses' => 'LoginController@register',
         'as' => 'register.attempt'
     ]);
-
 });
 
-Route::group(['middleware' => 'auth'], function(){
+Route::group(['middleware' => 'auth'], function () {
 
 
-    Route::get('/test', function(){
+    Route::get('/test', function () {
         $user = App\User::find(1);
         return $user->friends()->sortByDesc('messages');
     });
@@ -46,21 +47,23 @@ Route::group(['middleware' => 'auth'], function(){
         'as' => 'logout'
     ]);
 
-	Route::resource('/posts', 'PostsController', ['only' => [
-    	'store', 'update', 'destroy']
+    Route::resource('/posts', 'PostsController', [
+        'only' => [
+            'store', 'update', 'destroy'
+        ]
     ]);
 
     Route::resource('/comments', 'CommentsController', ['only' => [
-    	'store', 'destroy'
+        'store', 'destroy'
     ]]);
 
     Route::resource('/events', 'EventsController', ['only' => [
-    	'index', 'create', 'store', 'destroy', 'show'
+        'index', 'create', 'store', 'destroy', 'show'
     ]]);
 
     Route::get('/profile/{id}', [
-    	'as' => 'profile.view',
-    	'uses' => 'ProfileController@view'
+        'as' => 'profile.view',
+        'uses' => 'ProfileController@view'
     ]);
 
     Route::get('/profile/{id}/edit', [
@@ -79,23 +82,23 @@ Route::group(['middleware' => 'auth'], function(){
     ]);
 
     Route::get('/tag/{name}', [
-    	'as' => 'tag.search',
-    	'uses' => 'TagsController@search'
+        'as' => 'tag.search',
+        'uses' => 'TagsController@search'
     ]);
 
     Route::get('/photos/{id}', [
-    	'as' => 'photos',
-    	'uses' => 'HomeController@photos'
+        'as' => 'photos',
+        'uses' => 'HomeController@photos'
     ]);
 
     Route::get('/friends/{id}', [
-    	'as' => 'friends',
-    	'uses' => 'HomeController@friends'
+        'as' => 'friends',
+        'uses' => 'HomeController@friends'
     ]);
 
-    Route::get('/saved/',[
-    	'as' => 'saved',
-    	'uses' => 'HomeController@saved'
+    Route::get('/saved/', [
+        'as' => 'saved',
+        'uses' => 'HomeController@saved'
     ]);
 
     Route::get('/messages/', [
@@ -108,45 +111,45 @@ Route::group(['middleware' => 'auth'], function(){
         'uses' => 'HomeController@updateOnline'
     ]);
 
-	Route::post('post/like', [
-		'as' => 'post.like',
-		'uses' => 'LikesController@LikePost'
-	]);
+    Route::post('post/like', [
+        'as' => 'post.like',
+        'uses' => 'LikesController@LikePost'
+    ]);
 
-	Route::post('post/info', [
-		'as' => 'post.info',
-		'uses' => 'PostsController@updateInfo'
-	]);
+    Route::post('post/info', [
+        'as' => 'post.info',
+        'uses' => 'PostsController@updateInfo'
+    ]);
 
-	Route::post('search/friends', [
-		'as' => 'search.post',
-		'uses' => 'SearchController@search'
-	]);
+    Route::post('search/friends', [
+        'as' => 'search.post',
+        'uses' => 'SearchController@search'
+    ]);
 
-	Route::post('friend/add', [
-		'as' => 'friend.add',
-		'uses' => 'FriendsController@SendRequest'
-	]);
+    Route::post('friend/add', [
+        'as' => 'friend.add',
+        'uses' => 'FriendsController@SendRequest'
+    ]);
 
-	Route::post('friend/cancel', [
-		'as' => 'friend.cancel',
-		'uses' => 'FriendsController@CancelRequest'
-	]);
+    Route::post('friend/cancel', [
+        'as' => 'friend.cancel',
+        'uses' => 'FriendsController@CancelRequest'
+    ]);
 
-	Route::post('friend/remove', [
-		'as' => 'friend.remove',
-		'uses' => 'FriendsController@RemoveFriend'
-	]);
+    Route::post('friend/remove', [
+        'as' => 'friend.remove',
+        'uses' => 'FriendsController@RemoveFriend'
+    ]);
 
-	Route::post('friend/accept', [
-		'as' => 'friend.accept',
-		'uses' => 'FriendsController@AcceptFriend'
-	]);
+    Route::post('friend/accept', [
+        'as' => 'friend.accept',
+        'uses' => 'FriendsController@AcceptFriend'
+    ]);
 
-	Route::post('save/post', [
-		'as' => 'save.post',
-		'uses' => 'SaveController@save'
-	]);
+    Route::post('save/post', [
+        'as' => 'save.post',
+        'uses' => 'SaveController@save'
+    ]);
 
     Route::post('message/friend', [
         'as' => 'message.start',
@@ -162,4 +165,31 @@ Route::group(['middleware' => 'auth'], function(){
         'as' => 'notifications.seen',
         'uses' => 'HomeController@notifications'
     ]);
+});
+
+use App\Http\Controllers\GroupController;
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
+    Route::get('/groups/create', [GroupController::class, 'create'])->name('groups.create');
+    Route::post('/groups', [GroupController::class, 'store'])->name('groups.store');
+    Route::get('/groups/{id}', [GroupController::class, 'show'])->name('groups.show');
+    Route::get('/groups/{id}/edit', [GroupController::class, 'edit'])->name('groups.edit');
+    Route::put('/groups/{id}', [GroupController::class, 'update'])->name('groups.update');
+    Route::delete('/groups/{id}', [GroupController::class, 'destroy'])->name('groups.destroy');
+
+    // Quản lý nhóm
+    Route::get('/groups/{id}/manage', [GroupController::class, 'manageGroup'])->name('groups.manage');
+    Route::post('/groups/{groupId}/members/{memberId}/approve', [GroupController::class, 'approveMember'])->name('groups.approveMember');
+    Route::delete('/groups/{groupId}/members/{memberId}/remove', [GroupController::class, 'removeMember'])->name('groups.removeMember');
+    Route::post('/groups/{groupId}/posts/{postId}/approve', [GroupController::class, 'approvePost'])->name('groups.approvePost');
+    Route::delete('/groups/{groupId}/posts/{postId}', [GroupController::class, 'deletePost'])->name('groups.deletePost');
+    // Định nghĩa route cho groups.loadApprovedMembers
+    Route::get('/groups/{id}/load-approved-members', [GroupController::class, 'showApprovedMembers'])->name('groups.loadApprovedMembers');
+
+    // Định nghĩa route cho groups.loadApprovedPosts
+    Route::get('/groups/{id}/load-approved-posts', [GroupController::class, 'showApprovedPosts'])->name('groups.loadApprovedPosts');
+    // Tham gia nhóm
+    Route::post('/groups/{groupId}/join', [GroupController::class, 'joinGroup'])->name('groups.join');
+    Route::post('/groups/{groupId}/posts', 'GroupController@storeGroupPost')->name('groups.storePost');
 });

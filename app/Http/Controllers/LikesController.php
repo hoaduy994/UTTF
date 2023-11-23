@@ -20,7 +20,6 @@ class LikesController extends Controller
 			$this->handleLike('App\Post', $postId);
 			
 			if ($like = Like::whereLikeableType('App\Post')->whereLikeableId($postId)->whereUserId(Auth::id())->first()){
-				// notification for the like
 				if ($post->user_id !== Auth::user()->id){
 
 					if (!Notification::where('user_id', $post->user_id)->where('from', Auth::user()->id)->where('notification_type', 'App\Like')->where('seen', 0)->first()){

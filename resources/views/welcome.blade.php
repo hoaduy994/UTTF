@@ -57,8 +57,9 @@
             .cont {
                 position: relative;
                 height: 100%;
-                background-image: url("http://www.wallpaperup.com/uploads/wallpapers/2014/12/22/562818/153de0fa3da7066b6261ca573bbe1e06.jpg");
-                background-size: cover;
+                background-image: url("https://www.wallpaperup.com/uploads/wallpapers/2023/11/03/1425436/7d8a0fdb12f9d78873d5ca99f626e0b4-1000.jpg");
+                background-size: auto;
+                background-position: center;
                 overflow: auto;
                 font-family: "Cabin", Helvetica, Arial, sans-serif;
             }
@@ -270,13 +271,13 @@
             }
 
             .has-form-error{
-                border-color: #2dc3e8 !important;
-                stroke: #2dc3e8 !important;
+                border-color: #e88b2d !important;
+                stroke: #e88b2d !important;
             }
 
             .help-block{
                 margin-bottom: 0px;
-                color:#2dc3e8;
+                color:#e88b2d;
                 font-size: 12px;
             }
 
@@ -301,7 +302,7 @@
         <div class="cont">
             <div class="demo">
                 <div class="login">
-                    <img src="{{ asset('img/logo_white_2.png') }}" width="250px" style="display: block; margin:0 auto; padding-top: 75px">
+                    <img src="{{ asset('img/logo-no-background.png') }}" width="250px" style="display: block; margin:0 auto; padding-top: 75px">
                     <div class="login__form login_form">
                     {!! Form::open(['id' => 'login_form']) !!}
                         <div class="login__row" id="LoginFormEmailInput">
@@ -363,9 +364,8 @@
 
         <script type="text/javascript">
             $(document).ready(function() {
-                
-                $('.login__row').tooltip('show');
 
+                $('.login__row').tooltip('show');
 
                 var animating = false,
                 submitPhase1 = 1100,
@@ -395,7 +395,7 @@
                     }
                 });
 
-                $(document).on("click", ".login_submit", function(e) {  
+                $(document).on("click", ".login_submit", function(e) {
                     if (animating) return;
                     animating = true;
                     var that = this;

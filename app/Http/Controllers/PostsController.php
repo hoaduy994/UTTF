@@ -51,12 +51,11 @@ class PostsController extends Controller
 
         $validator = Validator::make($request->all(), $rules);
 
-        // Validate the input and return correct response
         if ($validator->fails()){
             return Response()->json(array(
                 'success' => false,
                 'errors' => $validator->getMessageBag()->toArray()
-            ), 400); // 400 being the HTTP code for an invalid request.
+            ), 400); 
         }
 
         $post = Post::create([
@@ -84,7 +83,7 @@ class PostsController extends Controller
 
         return Response()->json(array(
                 'success' => true,
-        )); // 400 being the HTTP code for an invalid request.
+        )); 
 
     }
 
@@ -99,7 +98,6 @@ class PostsController extends Controller
         $post = Post::findOrFail($id);
 
         if ($post->user_id == Auth::user()->id){
-            // DELETE POST AND STUFF
             $post->likes()->delete();
             $post->comments()->delete();
             $post->tags()->delete();

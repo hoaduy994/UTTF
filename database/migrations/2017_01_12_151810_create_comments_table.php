@@ -21,13 +21,6 @@ class CreateCommentsTable extends Migration
             $table->timestamps();
         });
 
-        DB::table('comments')->insert(
-            array(
-                array('user_id' => '8', 'post_id' => '1', 'body' => 'Ahah So true!!', 'created_at' =>  \Carbon\Carbon::now(), 'updated_at' =>  \Carbon\Carbon::now()),
-                array('user_id' => '8', 'post_id' => '2', 'body' => "Ahah! Funny!", 'created_at' =>  \Carbon\Carbon::now(), 'updated_at' =>  \Carbon\Carbon::now()),
-                array('user_id' => '6', 'post_id' => '2', 'body' => "Great Stuff Iggy!", 'created_at' =>  \Carbon\Carbon::now(), 'updated_at' =>  \Carbon\Carbon::now()),
-            )
-        );
     }
 
     /**

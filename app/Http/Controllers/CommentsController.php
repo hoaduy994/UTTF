@@ -86,7 +86,9 @@ class CommentsController extends Controller
      */
     public function edit($id)
     {
-        //
+        // Lấy thông tin của bình luận từ ID và truyền vào view để chỉnh sửa.
+        $comment = Comment::findOrFail($id);
+        return view('comments.edit', compact('comment'));
     }
 
     /**
@@ -98,29 +100,27 @@ class CommentsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-    }
+        // Validate dữ liệu và cập nhật thông tin bình luận.
+        $this->validate($request, [
+            'body' => 'required|min:3|max:255'
+        ]);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+        $comment = Comment::findOrFail($id);
+        $comment->body = $request->input('body');
+        $comment->save();
+
+        return redirect()->back();
+    }
     public function destroy($id)
     {
-        
         $comment = Comment::findOrFail($id);
-
         $post = Post::findOrFail($comment->post->id);
 
-
-        if ($comment->user_id == Auth::user()->id || $comment->post->user_id == Auth::user()->id){
+        if ($comment->user_id == Auth::user()->id || $comment->post->user_id == Auth::user()->id) {
             $comment->delete();
             Notification::where('user_id', $post->user_id)->where('from', Auth::user()->id)->where('notification_type', 'App\Comment')->delete();
         }
 
         return redirect()->back();
-        
     }
 }

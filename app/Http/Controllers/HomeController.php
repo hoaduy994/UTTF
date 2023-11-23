@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Group;
 use Illuminate\Http\Request;
 use Auth;
 use App\User;
@@ -12,7 +13,6 @@ class HomeController extends Controller
 
 
     public function __construct(){
-
         if (!Auth::check()){
             return view('welcome');
         }
@@ -25,7 +25,9 @@ class HomeController extends Controller
      */
     public function index(){
         if (Auth::check()){
+            
             return view('app.index')->with('active', 'index');
+            
         }
 
         return view('welcome');

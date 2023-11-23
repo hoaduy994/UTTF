@@ -1,8 +1,26 @@
 <div class="panel" id="PostId{{ $post->id }}">
     <div class="panel-heading">
         <img src="{{ $post->user->getAvatarImagePath() }}" class="pull-left img-circle" height="45px">
-        <span class="info"><a href="{{ route('profile.view', ['id' => $post->user->id]) }}"
-                              class="darker_link"><b>{{ $post->user->getFullName() }}</b></a></span>
+        <span class="info">
+            @if ($post->inGroup() )
+                <a href="{{ route('profile.view', ['id' => $post->user->id]) }}"
+                    class="darker_link">
+                        <b>{{ $post->user->getFullName() }}</b>
+                </a>
+                <strong> >> </strong> 
+                @foreach ($post->groups as $group)
+                    <a href="{{ route('groups.show', ['id' => $group->id]) }}"
+                    class="darker_link">
+                        <b>{{ $group->getName() }}</b>
+                    </a>
+                @endforeach
+            @else
+                <a href="{{ route('profile.view', ['id' => $post->user->id]) }}"
+                class="darker_link">
+                    <b>{{ $post->user->getFullName() }}</b>
+                </a>
+            @endif
+        </span>
         @if ($post->user_id == Auth::user()->id)
             {!! Form::open(['method' => 'DELETE', 'action' => ['PostsController@destroy', $post->id]]) !!}
             <span class="info" style="color: #9d9d9d"><i><small>{{ $post->created_at->diffForHumans() }} - <button
@@ -60,7 +78,7 @@
                 {!! Form::hidden('post_id', $post->id) !!}
                 {!! Form::text('body', null, ['class' => 'form-control', 'required' => 'required', 'placeholder' => 'Viết bình luận của bạn..']) !!}
                 <span class="input-group-btn">
-					{{ Form::button('<i class="fa fa-location-arrow" aria-hidden="true"></i> Đăng bài viết', array('class'=>'btn btn-signature', 'type'=>'submit')) }}
+					{{ Form::button('<i class="fa fa-location-arrow" aria-hidden="true"></i> Bình luận', array('class'=>'btn btn-signature', 'type'=>'submit')) }}
 				</span>
             </div><!-- /input-group -->
             {!! Form::close() !!}
