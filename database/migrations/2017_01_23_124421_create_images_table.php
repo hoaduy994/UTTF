@@ -21,11 +21,7 @@ class CreateImagesTable extends Migration
             $table->timestamps();
         });
 
-        DB::table('images')->insert(
-            array(
-                array('filename' => 'slinky.png', 'imageable_id' => '1', 'imageable_type' => 'App\Post'),
-            )
-        );
+        
     }
 
     /**

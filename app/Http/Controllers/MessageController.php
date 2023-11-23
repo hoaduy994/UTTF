@@ -58,12 +58,11 @@ class MessageController extends Controller
         $rules = array('MsgBody' => 'required|max:140');
         $validator = Validator::make($request->all(), $rules);
 
-        // Validate the input and return correct response
         if ($validator->fails()){
             return Response::json(array(
                 'success' => false,
                 'errors' => $validator->getMessageBag()->toArray()
-            ), 400); // 400 being the HTTP code for an invalid request.
+            ), 400); 
         }
 
         if (!$friend = User::whereId($request->input('friend'))->first()){

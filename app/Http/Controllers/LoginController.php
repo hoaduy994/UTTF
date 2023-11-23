@@ -42,19 +42,18 @@ class LoginController extends Controller
     }
 
     public function register(Request $request){
-    	$rules = array('name' => 'required|min:7|max:30', 'email' => 'required|email|max:50|unique:users', 'password' => 'required|min:3|max:20');
+    	$rules = array('name' => 'required|min:3|max:30', 'email' => 'required|email|max:50|unique:users', 'password' => 'required|min:3|max:20');
 		$validator = Validator::make($request->all(), $rules);
 
 		$parts = explode(" ", $request->input('name'));
 		$lastname = array_pop($parts);
 		$firstname = implode(" ", $parts);
 
-		// Validate the input and return correct response
 		if ($validator->fails()){
 		    return Response::json(array(
 		        'success' => false,
 		        'errors' => $validator->getMessageBag()->toArray()
-		    ), 400); // 400 being the HTTP code for an invalid request.
+		    ), 400); 
 		}
 
 		if(empty(trim($firstname)) or empty(trim($lastname))){
@@ -63,7 +62,7 @@ class LoginController extends Controller
 		        'errors' => [
 		        	'name' => 'Must have First and Last Name.'
 		        ]
-		    ), 400); // 400 being the HTTP code for an invalid request.
+		    ), 400); 
 		}
 
 
@@ -74,19 +73,6 @@ class LoginController extends Controller
 		$user->password = bcrypt($request->input('password'));
 
 		$user->save();
-
-		// Adding bots as friends!
-		$user->friendsOfMine()->sync([
-            1 => [ 'accepted' => "1"],
-            2 => [ 'accepted' => "1"],
-            3 => [ 'accepted' => "1"],
-            4 => [ 'accepted' => "0"],
-            5 => [ 'accepted' => "1"],
-            6 => [ 'accepted' => "1"],
-            7 => [ 'accepted' => "1"],
-            8 => [ 'accepted' => "0"],
-            9 => [ 'accepted' => "1"],
-        ]);
 
 		Auth::login($user);
 

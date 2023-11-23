@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
-use http\Client\Response;
+use Illuminate\Support\Facades\Response;
 use App\User;
 
 
@@ -24,7 +24,7 @@ class ProfileController extends Controller
 
 		$user = User::findOrFail($id);
 
-		if (!$user->id == Auth::user()->id){
+		if ($user->id !== Auth::user()->id){
 			return redirect()->back();
 		}
 
@@ -40,12 +40,11 @@ class ProfileController extends Controller
 
         $validator = Validator::make($request->all(), $rules);
 
-        // Validate the input and return correct response
         if ($validator->fails()){
             return Response::json(array(
                 'success' => false,
                 'errors' => $validator->getMessageBag()->toArray()
-            ), 400); // 400 being the HTTP code for an invalid request.
+            ), 400);
         }
 
         if ($request->hasFile('image')){
@@ -76,12 +75,11 @@ class ProfileController extends Controller
 
         $validator = Validator::make($request->all(), $rules);
 
-        // Validate the input and return correct response
         if ($validator->fails()){
             return Response::json(array(
                 'success' => false,
                 'errors' => $validator->getMessageBag()->toArray()
-            ), 400); // 400 being the HTTP code for an invalid request.
+            ), 400); 
         }
 
         if ($request->hasFile('image')){

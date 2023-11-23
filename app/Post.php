@@ -10,47 +10,90 @@ use Illuminate\Support\Str;
 class Post extends Model
 {
     protected $fillable = [
-    	'body', 'user_id'
+        'body', 'user_id'
     ];
 
     protected $post_image_path = 'img/posts/';
 
-    public function infoStatus(){
-        return $this->likes()->count() . ' Lượt thích | '. $this->comments()->count() . ' Bình luận';
+    public function infoStatus()
+    {
+        return $this->likes()->count() . ' Lượt thích | ' . $this->comments()->count() . ' Bình luận';
     }
 
-    public function imagePath(Image $img){
+    public function imagePath(Image $img)
+    {
         return $this->post_image_path . $img->filename;
     }
 
     /* Relations */
 
-    public function notifications(){
+    public function notifications()
+    {
         return $this->morphMany('App\notification', 'notification');
     }
 
-    public function user(){
-    	return $this->belongsTo('App\User');
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
-    public function likes(){
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'group_post', 'post_id', 'group_id');
+    }
+    public function group()
+    {
+        return $this->belongsTo(Group::class, 'group_id');
+    }
+
+    public function inGroup()
+    {
+        return GroupPost::where('post_id', $this->id)->where('approved', true)->exists();
+    }
+
+
+    public function groupPost()
+    {
+        return $this->hasOne(GroupPost::class, 'post_id');
+    }
+    public function likes()
+    {
         return $this->morphMany('App\Like', 'likeable');
     }
 
-    public function comments(){
+    public function comments()
+    {
         return $this->hasMany('App\Comment');
     }
 
-    public function saves(){
+    public function saves()
+    {
         return $this->hasMany('App\Save');
     }
 
-    public function tags(){
+    public function tags()
+    {
         return $this->hasMany('App\Tag');
     }
 
-    public function images(){
+    public function images()
+    {
         return $this->morphMany('App\Image', 'imageable');
     }
-
+    public function inGroupWithoutFriendship($user)
+    {
+        return $this->group()->whereHas('users', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })->exists();
+    }
+    public function getApprovedGroupsAttribute()
+    {
+        return $this->groups()->wherePivot('approved', true)->get();
+    }
+    public function approvedPosts()
+    {
+        return $this->belongsToMany(Post::class, 'group_post')
+            ->withPivot('approved')
+            ->wherePivot('approved', true);
+    }
 }

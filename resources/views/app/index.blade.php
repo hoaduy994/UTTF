@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
     <div class="container">
         <div class="row timeline">
             <div class="col-md-3">
@@ -25,13 +24,16 @@
                     <input type="file" id="image" name="image" style="display:none"/>
                     {{ Form::button('<i class="fa fa-location-arrow" aria-hidden="true"></i> Chia sẻ ngay', array('class'=>'btn btn-signature pull-right', 'type'=>'submit')) }}
                 </div>
+
                 <div class="progress" style="display: none">
                     <div id="PostProgressBar" class="progress-bar progress-bar-striped active" role="progressbar"
                          aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">
                     </div>
                 </div>
+
                 <span class="help-block" id="PostErrors" style="display: none;">
 				</span>
+                
                 {!! Form::close() !!}
 
                 @if (Auth::user()->getTimeline()->count())
@@ -44,14 +46,14 @@
             </div> <!-- news feed -->
             <div class="col-md-3 sidebar">
 
-                <div class="panel panel-default">
+                {{-- <div class="panel panel-default">
                     <div class="panel-heading">
-                        Something here
+                        <h1>    </h1>
                     </div>
                     <div class="panel-body">
 
                     </div>
-                </div>
+                </div> --}}
 
                 @if (Auth::user()->HasAnyFriendRequestsPending()->count())
                     <div class="panel panel-default">

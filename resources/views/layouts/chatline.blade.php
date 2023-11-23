@@ -25,7 +25,4 @@
 	@if ($friend->id == 1)
 		<p>Có vẻ đó là một người bạn đáng mến! ;)</p>
 	@endif
-	@if ($friend->bot == 1)
-		<p>Lưu ý rằng đây chỉ là một AI... :|</p>
-	@endif
 @endif
