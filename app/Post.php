@@ -45,12 +45,12 @@ class Post extends Model
     {
         return $this->belongsTo(Group::class, 'group_id');
     }
-
+    
     public function inGroup()
     {
         return GroupPost::where('post_id', $this->id)->where('approved', true)->exists();
     }
-
+    
 
     public function groupPost()
     {

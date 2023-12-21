@@ -6,7 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>{{ config('app.name') }}</title>
-<meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -23,7 +24,7 @@
             }
 
             html, body {
-                font-size: 62.5%;
+                font-size: 70.5%;
                 height: 100%;
                 overflow: hidden;
             }
@@ -57,8 +58,8 @@
             .cont {
                 position: relative;
                 height: 100%;
-                background-image: url("https://www.wallpaperup.com/uploads/wallpapers/2023/11/03/1425436/7d8a0fdb12f9d78873d5ca99f626e0b4-1000.jpg");
-                background-size: auto;
+                background-image: url('/img/welcome.png');
+                background-size: cover;
                 background-position: center;
                 overflow: auto;
                 font-family: "Cabin", Helvetica, Arial, sans-serif;
@@ -301,7 +302,7 @@
     <body>
         <div class="cont">
             <div class="demo">
-                <div class="login">
+                <div class="login" style="border-radius: 12px">
                     <img src="{{ asset('img/logo-no-background.png') }}" width="250px" style="display: block; margin:0 auto; padding-top: 75px">
                     <div class="login__form login_form">
                     {!! Form::open(['id' => 'login_form']) !!}
@@ -451,7 +452,7 @@
                                 $("#LoginFormEmailInput").addClass('has-form-error');
                                 $("#LoginFormEmailInput svg path").addClass('has-form-error');
                                 $("#LoginFormPasswordError").show();
-                                $("#LoginFormPasswordError").html('<i class="fa fa-exclamation-circle fa-lg" aria-hidden="true"></i> Credentials do not match!');
+                                $("#LoginFormPasswordError").html('<i class="fa fa-exclamation-circle fa-lg" aria-hidden="true"></i> Tài khoản hoặc mật khẩu không chính xác.');
                               }
                           $(that).removeClass("processing");
                           animating = false;

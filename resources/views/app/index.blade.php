@@ -16,24 +16,31 @@
             </div> <!-- profile -->
             <div class="col-md-6 feed">
                 {!! Form::open(['id' => 'PostForm', 'method' => 'POST', 'action' => 'PostsController@store', 'files' => 'true']) !!}
-                {!! Form::textarea('body', null, ['class' => 'form-control', 'required' => 'required', 'placeholder' => "Bạn có gì muốn chia sẻ?", 'rows' => '2']) !!}
+                {!! Form::textarea('body', null, [
+                    'class' => 'form-control',
+                    'required' => 'required',
+                    'placeholder' => 'Bạn có gì muốn chia sẻ?',
+                    'rows' => '2',
+                ]) !!}
 
                 <div class="textareaOptions">
-                    <li id="PostImageUploadBtn" class="pointer"><i class="fa fa-lg fa-camera-retro"
-                                                                   aria-hidden="true"></i></li>
-                    <input type="file" id="image" name="image" style="display:none"/>
-                    {{ Form::button('<i class="fa fa-location-arrow" aria-hidden="true"></i> Chia sẻ ngay', array('class'=>'btn btn-signature pull-right', 'type'=>'submit')) }}
+                    <li id="PostImageUploadBtn" class="pointer"><i class="fa fa-lg fa-camera-retro" aria-hidden="true"></i>
+                    </li>
+                    <input type="file" id="image" name="image" style="display:none" />
+                    {{ Form::button('<i class="fa fa-location-arrow" aria-hidden="true"></i> Chia sẻ ngay', ['class' => 'btn btn-signature pull-right', 'type' => 'submit']) }}
+                    <img id="imagePreview" src="#" alt="Ảnh xem trước" style="display:none; max-width: 100px; max-height: 100px;">
                 </div>
+
 
                 <div class="progress" style="display: none">
                     <div id="PostProgressBar" class="progress-bar progress-bar-striped active" role="progressbar"
-                         aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">
+                        aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">
                     </div>
                 </div>
 
                 <span class="help-block" id="PostErrors" style="display: none;">
-				</span>
-                
+                </span>
+
                 {!! Form::close() !!}
 
                 @if (Auth::user()->getTimeline()->count())
@@ -61,7 +68,9 @@
                             Các yêu cầu kết bạn đang đợi
                         </div>
                         <div class="panel-body">
-                            @include('layouts.search_results', array('users' => Auth::user()->HasAnyFriendRequestsPending()))
+                            @include('layouts.search_results', [
+                                'users' => Auth::user()->HasAnyFriendRequestsPending(),
+                            ])
                         </div>
                     </div>
                 @endif
@@ -74,15 +83,17 @@
                         <div class="panel-body">
                             @foreach (Auth::user()->notifications()->where('seen', 0)->get() as $notification)
                                 <p>
-                                    <a href="{{ route('profile.view', ['id' => $notification->userFrom->id]) }}">{{ $notification->userFrom->getFullName() }}</a>
+                                    <a
+                                        href="{{ route('profile.view', ['id' => $notification->userFrom->id]) }}">{{ $notification->userFrom->getFullName() }}</a>
                                     đã
                                     @if ($notification->notification_type == 'App\Like')
                                         thích <a class="smoothScroll"
-                                                      href="#PostId{{ $notification->notification->likeable->id }}">bài viết của bạn</a>
+                                            href="#PostId{{ $notification->notification->likeable->id }}">bài viết của
+                                            bạn</a>
                                         .
                                     @else
                                         bình luận <a class="smoothScroll"
-                                                             href="#PostId{{ $notification->notification->post->id }}">bài viết của bạn</a>
+                                            href="#PostId{{ $notification->notification->post->id }}">bài viết của bạn</a>
                                         .
                                     @endif
                                 </p>
@@ -102,9 +113,9 @@
                         <div class="input-group">
                             {!! Form::text('q', null, ['class' => 'form-control', 'placeholder' => 'Tìm bạn..', 'id' => 'q']) !!}
                             <span class="input-group-btn">
-							<button class="btn btn-default" type="button" id="SearchForFriendsButton"><i
+                                <button class="btn btn-default" type="button" id="SearchForFriendsButton"><i
                                         class="fa fa-search" aria-hidden="true"></i></button>
-						</span>
+                            </span>
                         </div><!-- /input-group -->
                         <div id="SearchResults">
 
@@ -130,9 +141,19 @@
 
 @section('scripts')
     <script type="text/javascript">
-        $(document).ready(function () {
+        document.getElementById("image").onchange = function(e) {
+            var reader = new FileReader();
 
-            $("#NotificationsButtonSeen").click(function () {
+            reader.onload = function(e) {
+                document.getElementById("imagePreview").style.display = "block";
+                document.getElementById("preview").src = e.target.result;
+            };
+
+            reader.readAsDataURL(this.files[0]);
+        };
+        $(document).ready(function() {
+
+            $("#NotificationsButtonSeen").click(function() {
 
                 $("#NotificationsPanel").hide();
 
@@ -146,7 +167,7 @@
 
             });
 
-            $(".smoothScroll").click(function (event) {
+            $(".smoothScroll").click(function(event) {
                 //prevent the default action for the click event
                 event.preventDefault();
 
@@ -162,10 +183,12 @@
                 var target_top = target_offset.top;
 
                 //goto that anchor by setting the body scroll top to anchor top
-                $('html, body').animate({scrollTop: target_top}, 425);
+                $('html, body').animate({
+                    scrollTop: target_top
+                }, 425);
             });
 
-            $("#PostForm").on('submit', function (e) {
+            $("#PostForm").on('submit', function(e) {
                 e.preventDefault();
 
                 $form = $(this);
@@ -174,15 +197,16 @@
 
                 var request = new XMLHttpRequest();
 
-                request.upload.addEventListener('progress', function (e) {
+                request.upload.addEventListener('progress', function(e) {
 
                     var percent = e.loaded / e.total * 100;
                     $('#PostProgressBar').parent().show();
-                    $('#PostProgressBar').css('width', percent + '%').attr('aria-valuenow', percent);
+                    $('#PostProgressBar').css('width', percent + '%').attr('aria-valuenow',
+                        percent);
 
                 });
 
-                request.onreadystatechange = function () {
+                request.onreadystatechange = function() {
                     if (request.readyState == XMLHttpRequest.DONE) {
                         var data = JSON.parse(request.responseText);
                         if (data.success) {
@@ -217,8 +241,11 @@
                 $.ajax({
                     type: "POST",
                     url: url,
-                    data: {_token: token, q: q},
-                    success: function (response) {
+                    data: {
+                        _token: token,
+                        q: q
+                    },
+                    success: function(response) {
                         $("#SearchResults").html("<hr>");
                         $("#SearchResults").append(response);
                         friendEvents();
@@ -226,11 +253,11 @@
                 });
             }
 
-            $("#SearchForFriendsButton").click(function () {
+            $("#SearchForFriendsButton").click(function() {
                 submitSearch();
             });
 
-            $("#q").keypress(function (e) {
+            $("#q").keypress(function(e) {
                 if (e.which == 13) {
                     submitSearch();
                     return false;
@@ -238,56 +265,68 @@
             });
 
             function friendEvents() {
-                $('.addFriend').click(function () {
+                $('.addFriend').click(function() {
                     var id = $(this).attr('data-id');
 
                     $.ajax({
                         type: "POST",
                         url: "{{ route('friend.add') }}",
-                        data: {id: id, _token: '{{ Session::token() }}'},
-                        success: function (response) {
+                        data: {
+                            id: id,
+                            _token: '{{ Session::token() }}'
+                        },
+                        success: function(response) {
                             $("#friendStatusDiv" + id).html(response);
                             friendEvents();
                         }
                     });
                 });
 
-                $('.cancelFriend').click(function () {
+                $('.cancelFriend').click(function() {
                     var id = $(this).attr('data-id');
 
                     $.ajax({
                         type: "POST",
                         url: "{{ route('friend.cancel') }}",
-                        data: {id: id, _token: '{{ Session::token() }}'},
-                        success: function (response) {
+                        data: {
+                            id: id,
+                            _token: '{{ Session::token() }}'
+                        },
+                        success: function(response) {
                             $("#friendStatusDiv" + id).html(response);
                             friendEvents();
                         }
                     });
                 });
 
-                $('.removeFriend').click(function () {
+                $('.removeFriend').click(function() {
                     var id = $(this).attr('data-id');
 
                     $.ajax({
                         type: "POST",
                         url: "{{ route('friend.remove') }}",
-                        data: {id: id, _token: '{{ Session::token() }}'},
-                        success: function (response) {
+                        data: {
+                            id: id,
+                            _token: '{{ Session::token() }}'
+                        },
+                        success: function(response) {
                             $("#friendStatusDiv" + id).html(response);
                             friendEvents();
                         }
                     });
                 });
 
-                $('.acceptFriend').click(function () {
+                $('.acceptFriend').click(function() {
                     var id = $(this).attr('data-id');
 
                     $.ajax({
                         type: "POST",
                         url: "{{ route('friend.accept') }}",
-                        data: {id: id, _token: '{{ Session::token() }}'},
-                        success: function (response) {
+                        data: {
+                            id: id,
+                            _token: '{{ Session::token() }}'
+                        },
+                        success: function(response) {
                             $("#friendStatusDiv" + id).html(response);
                             friendEvents();
                         }
@@ -297,7 +336,7 @@
 
             friendEvents();
 
-            $("#PostImageUploadBtn").click(function () {
+            $("#PostImageUploadBtn").click(function() {
                 $("#image").trigger('click');
             });
 

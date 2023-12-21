@@ -12,6 +12,7 @@
 */
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', [
     'uses' => 'HomeController@index',
@@ -35,7 +36,6 @@ Route::group(['middleware' => 'web'], function () {
 });
 
 Route::group(['middleware' => 'auth'], function () {
-
 
     Route::get('/test', function () {
         $user = App\User::find(1);
@@ -70,6 +70,8 @@ Route::group(['middleware' => 'auth'], function () {
         'as' => 'profile.edit',
         'uses' => 'ProfileController@edit'
     ]);
+
+    Route::post('/profile/update/{id}', [ProfileController::class, 'update_info'])->name('profile.update_info');
 
     Route::post('/profile/cover/update', [
         'uses' => 'ProfileController@changeCover',
@@ -165,11 +167,13 @@ Route::group(['middleware' => 'auth'], function () {
         'as' => 'notifications.seen',
         'uses' => 'HomeController@notifications'
     ]);
+    Route::post('/profile/change-password/{id}', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
 });
 
 use App\Http\Controllers\GroupController;
 
 Route::middleware(['auth'])->group(function () {
+
     Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
     Route::get('/groups/create', [GroupController::class, 'create'])->name('groups.create');
     Route::post('/groups', [GroupController::class, 'store'])->name('groups.store');
@@ -191,5 +195,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/groups/{id}/load-approved-posts', [GroupController::class, 'showApprovedPosts'])->name('groups.loadApprovedPosts');
     // Tham gia nhóm
     Route::post('/groups/{groupId}/join', [GroupController::class, 'joinGroup'])->name('groups.join');
+    Route::delete('/groups/{groupId}/cancelJoinRequest', 'GroupController@cancelJoinRequest')->name('groups.cancelJoinRequest');
+    Route::delete('/groups/{groupId}/leave', 'GroupController@leaveGroup')->name('groups.leave');
+
     Route::post('/groups/{groupId}/posts', 'GroupController@storeGroupPost')->name('groups.storePost');
+    Route::post('/posts/{id}', 'PostsController@update')->name('posts.update');
 });

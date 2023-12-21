@@ -5,26 +5,36 @@
         </a>
     </div>
     <div class="media-body">
-        <h4 class="media-heading">
+        <h4 class="media-heading" style="display: flex">
             <a class="darker_link" href="{{ route('profile.view', ['id' => $comment->user->id]) }}">
                 <b>{{ $comment->user->getFullName() }}</b>
             </a>
-            <i> <small>- {{ $comment->created_at->diffForHumans() }}</small></i>
+            <i> <small style="margin-left: 4px;">- {{ $comment->created_at->diffForHumans() }} - </small></i>
+            @if ($comment->canDelete($post->id))
+                {!! Form::open([
+                    'method' => 'DELETE',
+                    'route' => ['comments.destroy', 'comment' => $comment->id],
+                    'id' => 'delete-form',
+                ]) !!}
+                <button style="font-size: 75%; font-style: italic; background-color: transparent; " type="button" data-toggle="modal" data-target="#confirmDelete" data-title="Xóa bình luận"
+                    data-message="Bạn chắc chắn muốn xóa bình luận này chứ?" class="delete-btn">
+                    <i class="fa fa-trash-o" aria-hidden="true"></i> Xóa
+                </button>
+                {!! Form::close() !!}
+            @endif
         </h4>
         <p>{{ $comment->body }}</p>
 
-        @if ($comment->canDelete($post->id))
-            {!! Form::open(['method' => 'DELETE', 'route' => ['comments.destroy', 'comment' => $comment->id], 'id' => 'delete-form']) !!}
-                <button type="button" data-toggle="modal" data-target="#confirmDelete" data-title="Xóa bình luận" data-message="Bạn chắc chắn muốn xóa bình luận này chứ?" class="delete-btn">
-                    <i class="fa fa-trash-o" aria-hidden="true"></i> Xóa
-                </button>
-            {!! Form::close() !!}
-        @endif
+
     </div>
+    @error('body')
+        <div class="alert alert-danger">{{ $message }}</div>
+    @enderror
 </div>
 
 <!-- Modal xác nhận xóa -->
-<div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+<div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -51,7 +61,7 @@
     });
 
     // Hiển thị nội dung thông báo xóa trong modal
-    $('#confirmDelete').on('show.bs.modal', function (event) {
+    $('#confirmDelete').on('show.bs.modal', function(event) {
         var button = $(event.relatedTarget);
         var title = button.data('title');
         var message = button.data('message');

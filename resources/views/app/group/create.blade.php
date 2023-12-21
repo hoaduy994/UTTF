@@ -20,13 +20,19 @@
                     @csrf
                     <div class="form-group">
                         <label for="name">Tên Nhóm</label>
+                        {{-- <input type="text" class="form-control" id="name" name="name" required> --}}
                         <input type="text" class="form-control" id="name" name="name" required>
+                        @error('name')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="description">Mô tả</label>
                         <textarea class="form-control" id="description" name="description" rows="4"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Tạo Nhóm</button>
+                    <!-- Thêm nút "Hủy" -->
+                    <a href="{{ route('groups.index') }}" class="btn btn-danger">Hủy</a>
                 </form>
             </div>
             <div class="col-md-3 sidebar">

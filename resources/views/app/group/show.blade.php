@@ -15,28 +15,66 @@
                 </div>
             </div> <!-- profile -->
             <div class="col-md-6 feed">
-                <h1>{{ $group->name }}</h1>
-                <h3>{{ $group->description }} </h3>
-                @if (Auth::check() && $group->user_id === Auth::user()->id)
-                    <!-- Hiển thị nút chỉnh sửa thông tin nhóm -->
-                    <a href="{{ route('groups.edit', $group->id) }}" class="btn btn-primary">Chỉnh Sửa</a>
-                    <!-- Hiển thị nút xóa nhóm -->
-                    <form action="{{ route('groups.destroy', $group->id) }}" method="POST" style="display: inline-block;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger"
-                            onclick="return confirm('Bạn có chắc chắn muốn xóa nhóm này?')">Xóa Nhóm</button>
-                    </form>
-                    <a href="{{ route('groups.manage', $group->id) }}" class="btn btn-success">Quản Lý Nhóm</a>
-                @endif
+                <div
+                    style="display: flex; width:100%; border-bottom: 3px solid #e88b2d; background-color: #fff; background-color: #fff; margin-bottom:10px;">
+                    <div style="display:flex; margin-bottom: 0px ; width:100%;justify-content: space-between;padding: 0 8px;">
+                        <div style="margin: 20px">
+                            <h1>{{ $group->name }}</h1>
+                            <h3>{{ $group->description }} </h3>
+                        </div>
+                        
+                        @if (Auth::check() && $group->user_id === Auth::user()->id)
+                            <div class="btn-group" style="margin: 20px; display:flex; align-items:center; justify-content: center;">
+
+                                {!! Form::open(['method' => 'DELETE', 'action' => ['GroupController@destroy', $group->id]]) !!}
+                                <div style="display: flex;">
+                                    <a href="{{ route('groups.edit', $group->id) }}" class="btn-group-custom btn btn-primary">
+                                    <img width="20" height="20" src="https://img.icons8.com/pastel-glyph/32/FFFFFF/edit--v1.png" alt="edit--v1"/>
+                                </a>
+
+                                <a href="{{ route('groups.manage', $group->id) }}" class="btn-group-custom btn btn-success">
+                                    <img width="20" height="20" src="https://img.icons8.com/ios-filled/50/FFFFFF/visible.png" alt="visible"/>
+                                </a>
+
+                                <button class="btn-group-custom btn btn-danger" type="button" data-toggle="modal"
+                                    data-target="#confirmDelete" data-title="Xóa Nhóm"
+                                    data-message="Bạn chắc chắn muốn xóa nhóm này?">
+                                    <i style="margin: 2px;" class="fa fa-trash-o" aria-hidden="true"></i>
+                                </button>
+
+                                </div>
+                                
+                                {!! Form::close() !!}
+
+                            </div>
+                        @endif
+                        
+                    </div>
+
+
+
+                </div>
+                
                 @if ($group->isMember(Auth::user()))
-                    <!-- Hiển thị chức năng chỉ dành cho thành viên của nhóm -->
+
+                    <div style="display: flex;
+                    justify-content: end;">
+                        <form action="{{ route('groups.leave', $group->id) }}" method="post" class="mt-2">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-warning"
+                                style="margin-top: auto; margin-bottom: auto;">Rời
+                                Nhóm</button>
+                        </form>
+                    </div>
+
                     {!! Form::open([
                         'id' => 'GroupPostForm',
                         'method' => 'POST',
                         'action' => ['GroupController@storeGroupPost', $group->id],
                         'files' => 'true',
                     ]) !!}
+                    {{-- <input id="fileupload" name="image[]" type="file" multiple /> --}}
                     {!! Form::textarea('body', null, [
                         'class' => 'form-control',
                         'required' => 'required',

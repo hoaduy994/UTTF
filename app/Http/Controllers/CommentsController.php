@@ -38,34 +38,30 @@ class CommentsController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $request->validate([
             'post_id' => 'required|integer|exists:posts,id',
-            'body' => 'required|min:3|max:255'
+            'body' => 'required|min:1|max:255'
         ]);
 
+        // Tiếp tục thực hiện các bước khác nếu validation thành công
         $post = Post::findOrFail($request->input('post_id'));
-
+    
         $comment = Comment::create([
             'post_id' => $request->input('post_id'),
             'body' => $request->input('body'),
             'user_id' => Auth::user()->id
         ]);
-
-
-        // to stop from getting a notification when the user comments his own post.
+    
         if ($post->user_id !== Auth::user()->id){
-            // If there is not yet a notification, well then create one!!
             $comment->notifications()->create([
                 'user_id' => $post->user_id,
                 'from' => Auth::user()->id
             ]);
-            
         }
-
-        // anchor to the post sometime soon
+    
         return redirect()->back();
-
     }
+    
 
     /**
      * Display the specified resource.
@@ -111,6 +107,7 @@ class CommentsController extends Controller
 
         return redirect()->back();
     }
+
     public function destroy($id)
     {
         $comment = Comment::findOrFail($id);

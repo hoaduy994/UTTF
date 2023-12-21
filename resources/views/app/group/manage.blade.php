@@ -6,11 +6,11 @@
         width: 100%;
     }
 
-    table,
+    /* table,
     th,
     td {
         border: 1px solid black;
-    }
+    } */
 
     th,
     td {
@@ -27,9 +27,9 @@
         background-color: #f2f2f2;
     }
 
-    tr {
+    /* tr {
         border-bottom: 1px solid black;
-    }
+    } */
 
     tr:last-child {
         border-bottom: none;
@@ -51,6 +51,7 @@
                 </div>
             </div> <!-- profile -->
             <div class="col-md-6 feed">
+                
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
                         <a class="nav-link active" data-toggle="tab" href="#approvedMembers">Thành viên</a>
