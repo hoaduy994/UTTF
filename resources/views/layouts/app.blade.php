@@ -8,7 +8,8 @@
 		<title>{{ config('app.name', 'Laravel') }}</title>
 		<!-- Icons -->
 		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-		
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 		<!-- fonts -->
 		<link href="https://fonts.googleapis.com/css?family=Lato|Questrial|Just+Another+Hand" rel="stylesheet">
 
@@ -33,11 +34,11 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="{{ route('index') }}">{{ config('app.name', 'Laravel') }}</a>
+					<a style="    margin-top: 6px;" class="navbar-brand" href="{{ route('index') }}">{{ config('app.name', 'Laravel') }}</a>
 				</div>
 				<div class="collapse navbar-collapse" id="navigation">
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="{{ route('profile.view', ['id' => Auth::user()->id]) }}">Hồ sơ</a></li>
+						<li><a href="{{ route('profile.view', ['id' => Auth::user()->id]) }}">Trang cá nhân</a></li>
 						<li><a href="{{ route('index') }}">Trang chủ</a></li>
 						<li><a href="{{ url('/logout') }}">Đăng xuất</a></li>
 					</ul>

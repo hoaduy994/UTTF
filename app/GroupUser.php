@@ -8,7 +8,7 @@ class GroupUser extends Model
 {
     protected $table = 'group_user';
     protected $fillable = ['group_id', 'user_id', 'approved'];
-
+    
     public function user()
     {
         return $this->belongsTo(User::class);

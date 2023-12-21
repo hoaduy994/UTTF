@@ -26,7 +26,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'dob', 'email', 'password', 'cover', 'avatar',
+        'first_name', 'last_name', 'birthday', 'email', 'password', 'cover', 'avatar', 'description', 'address'
     ];
 
     /**
@@ -291,5 +291,12 @@ class User extends Authenticatable
         return $this->belongsToMany(Group::class, 'group_user')
             ->withPivot('approved')
             ->withTimestamps();
+    }
+    // Trong mô hình User
+    public function userInGroups()
+    {
+        // Kiểm tra xem người dùng thuộc nhóm nào không
+        return GroupUser::where('user_id', $this->id)->where('approved', true)->exists();
+
     }
 }

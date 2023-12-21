@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -9,8 +8,8 @@ use Auth;
 
 class SaveController extends Controller
 {
-    public function save(){
-    	$postId = Request::input('id');
+    public function save(Request $request){
+    	$postId = $request->input('id');
 
     	$post = Post::findOrFail($postId);
 
@@ -22,6 +21,19 @@ class SaveController extends Controller
     		return 0;
     	}
     }
+	// public function save(){
+    // 	$postId = Request::input('id');
+
+    // 	$post = Post::findOrFail($postId);
+
+    // 	$this->handleSave($postId);
+
+    // 	if ($post->saves()->whereUserId(Auth::user()->id)->wherePostId($postId)->first()){
+    // 		return 1;
+    // 	} else {
+    // 		return 0;
+    // 	}
+    // }
 
     public function handleSave($postId){
 
@@ -38,3 +50,4 @@ class SaveController extends Controller
 
 	}
 }
+

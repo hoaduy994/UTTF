@@ -48,7 +48,7 @@ a:hover{
 @media (min-width: 768px){
 	.MessagesFriendList{
 		max-height: 600px;
-		overflow-y: scroll;
+		/* overflow-y: scroll; */
 	}
 }
 
@@ -180,6 +180,10 @@ a:hover{
 	margin-bottom: 0px;
 }
 
+textarea {
+    resize: none;
+	height: 100px !important;
+}
 .timeline .feed textarea{
 	border-radius: 0;
 	font-size: 18px;
@@ -316,9 +320,11 @@ a:hover{
 	margin-bottom: 35px; 
 }
 
-.fb-profile img.fb-image-lg{
+.fb-profile img.fb-image-lg {
+    object-fit: cover;
+    height: 500px;
     z-index: 0;
-    width: 100%;  
+    width: 100%;
 }
 
 #Profile .fb-profile .fb-profile-text span{
@@ -415,7 +421,7 @@ a:hover{
     margin: 0;
     padding: 0;
     height: 594px;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
 }
 
 .Messages .chat li
@@ -500,4 +506,14 @@ footer{
 	padding-top: 25px;
 	padding-bottom: 20px;
 	border-top:2px solid #e88b2d;
+}
+
+.btn-group-custom{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 32px;
+	height: 32px;
+	border-radius: 10px;
+	margin: 6px;
 }

@@ -14,8 +14,13 @@ class LoginController extends Controller
 {
     public function login(Request $request){
 
-        $rules = array('email' => 'required|email|max:50', 'password' => 'required|min:3|max:20');
-		$validator = Validator::make($request->all(), $rules);
+        $rules = array('email' => 'required|email|max:50', 'password' => 'required|min:8|max:20');
+		$messages = array(
+			'email.required' => 'Vui lòng nhập địa chỉ email.',
+			'password.required' => 'Vui lòng nhập mật khẩu.',
+			'password.min' => 'Mật khẩu tối thiểu :min ký tự.'
+		);
+		$validator = Validator::make($request->all(), $rules, $messages);
 
 		// Validate the input and return correct response
 		if ($validator->fails()){
@@ -35,15 +40,23 @@ class LoginController extends Controller
         } else {
         	return Response::json(array(
 		        'success' => false,
-		        'errors' => array('credentials' => 'Credentials did not match!')
+		        'errors' => array('credentials' => 'Tài khoản hoặc mật khẩu không chính xác.')
 		    ), 400); // 400 being the HTTP code for an invalid request.
         }
 
     }
 
     public function register(Request $request){
-    	$rules = array('name' => 'required|min:3|max:30', 'email' => 'required|email|max:50|unique:users', 'password' => 'required|min:3|max:20');
-		$validator = Validator::make($request->all(), $rules);
+    	$rules = array('name' => 'required|min:8|max:30', 'email' => 'required|email|max:50|unique:users', 'password' => 'required|min:8|max:20');
+		$messages = array(
+			// 'name.required' => 'Vui lòng nhập họ và tên.',
+			// 'name.min' => 'Độ dài tối thiểu :min kí tự.',
+			// 'email.required' => 'Vui lòng nhập địa chỉ email.',
+			// 'email.unique' => 'Email đã được đăng ký.',
+			// 'password.required' => 'Vui lòng nhập mật khẩu.',
+			// 'password.min' => 'Mật khẩu tối thiểu :min kí tự.',
+		);
+		$validator = Validator::make($request->all(), $rules, $messages);
 
 		$parts = explode(" ", $request->input('name'));
 		$lastname = array_pop($parts);
@@ -60,7 +73,7 @@ class LoginController extends Controller
 			return Response::json(array(
 		        'success' => false,
 		        'errors' => [
-		        	'name' => 'Must have First and Last Name.'
+		        	'name' => 'Phải có họ và tên.'
 		        ]
 		    ), 400); 
 		}

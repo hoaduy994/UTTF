@@ -19,7 +19,7 @@
 		<div class="col-md-9">
 			@if (Auth::user()->saves->count())
 				<div class="posts">
-				@foreach (Auth::user()->saves as $save)
+				@foreach (Auth::user()->saves->sortByDesc('post_id') as $save)
 					@include('layouts.posts', ['post' => $save->post])
 				@endforeach
 				</div>

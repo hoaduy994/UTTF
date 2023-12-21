@@ -55,8 +55,10 @@ class MessageController extends Controller
 
     public function sendMsg(Request $request){
 
-        $rules = array('MsgBody' => 'required|max:140');
-        $validator = Validator::make($request->all(), $rules);
+        $rules = array();
+        $validator = Validator::make($request->all(), [
+            'MsgBody' => 'required|max:140',
+        ]);
 
         if ($validator->fails()){
             return Response::json(array(

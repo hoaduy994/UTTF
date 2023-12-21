@@ -17,12 +17,26 @@
 					<p>{{ $user->getFullName() }} chưa có bài viết nào.</p>
 				@endif
 				</div>
+
+
 				<div class="col-md-4 sidebar" style="padding-left:20px; padding-right: 0;">
 					@if ($user->id !== Auth::user()->id)
 						<div id="friendStatusDiv">
 							@include('layouts.friend_status', ['user' => $user, 'profileView' => 'true'])
 						</div>
 					@endif
+					<div class="panel panel-default" >
+						<div class="panel-heading" style=" display: flex;">
+							<i style="padding-right: 10px; font-size: 20px;" class="fas fa-info-circle"></i><strong>Thông tin cá nhân</strong>
+						</div>
+						<div class="panel-body" style="display: inline-block; width: 100%;">
+							<p style="text-align: center;"> {{ $user->description }}</p>
+							<p><i style="padding-right: 16px; font-size: 20px;" class="fas fa-map-marker-alt icon-spacing"></i>Sống tại <strong>{{ $user->address }}</strong></p>
+							<p><strong><i style="padding-right: 16px; font-size: 15px;" class="fas fa-envelope icon-spacing"></i>Email:</strong> {{ $user->email }}</p>
+							<p><strong><i style="padding-right: 16px; font-size: 18px;" class="fas fa-birthday-cake icon-spacing"></i>Ngày sinh:</strong> {{ \Carbon\Carbon::parse($user->birthday)->format('d - m - Y') }}</p>
+						</div>
+					</div>
+					
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							Bạn bè
@@ -33,6 +47,9 @@
 							@endforeach
 						</div>
 					</div>
+				</div>
+				<div class="col-md-4 sidebar" style="padding-left:20px; padding-right: 0;">
+					
 				</div>
 			</div>
 		</div>

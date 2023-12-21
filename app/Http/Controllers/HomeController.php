@@ -25,9 +25,8 @@ class HomeController extends Controller
      */
     public function index(){
         if (Auth::check()){
-            
+
             return view('app.index')->with('active', 'index');
-            
         }
 
         return view('welcome');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\GroupUser;
 use App\Group;
 use App\User;
 use App\Post;
@@ -21,8 +22,10 @@ class GroupController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|min:6',
             'description' => 'nullable|string|max:1000',
+        ], [
+            // 'name.min' => 'Tên nhóm phải có ít nhất :min ký tự.',
         ]);
 
         $group = Group::create([
@@ -55,8 +58,10 @@ class GroupController extends Controller
         }
 
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|min:6',
             'description' => 'nullable|string|max:1000',
+        ], [
+            // 'name.min' => 'Tên nhóm phải có ít nhất :min ký tự.',
         ]);
 
         $group->update([
@@ -185,6 +190,28 @@ class GroupController extends Controller
         return redirect()->route('groups.index')->with('success', 'Yêu cầu của bạn đã được gửi. Vui lòng đợi xác nhận từ admin.');
     }
 
+    public function cancelJoinRequest($groupId)
+    {
+        $userId = Auth::user()->id;
+
+        GroupUser::where('group_id', $groupId)
+            ->where('user_id', $userId)
+            ->where('approved', false)
+            ->delete();
+
+        return redirect()->route('groups.index')->with('success', 'Yêu cầu tham gia đã được hủy.');
+    }
+
+    public function leaveGroup($groupId)
+    {
+        $groupUser = GroupUser::where('group_id', $groupId)
+            ->where('user_id', Auth::user()->id)
+            ->where('approved', true) // Chỉ xử lý những thành viên đã được chấp nhận
+            ->delete();
+
+        return redirect()->route('groups.index')->with('error', 'Không tìm thấy thông tin thành viên để rời nhóm.');
+    }
+
     public function create()
     {
         return view('app.group.create')->with('active', 'groups');
@@ -279,7 +306,8 @@ class GroupController extends Controller
         return redirect()->route('groups.show', $groupId)->with('success', 'Bài viết của bạn đã được chia sẻ thành công.');
     }
 
-    public function showApprovedMembers($id) {
+    public function showApprovedMembers($id)
+    {
         $group = Group::findOrFail($id);
         $approvedMembers = $group->approvedMembers; // Lấy danh sách thành viên đã được xác nhận từ model
         $unapprovedMembers = $group->unapprovedMembers; // Lấy danh sách thành viên chưa được xác nhận từ model

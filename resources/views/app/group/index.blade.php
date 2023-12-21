@@ -14,25 +14,83 @@
                     @include('layouts.menu_links')
                 </div>
             </div> <!-- profile -->
-            <div class="col-md-6">
-                <h1>Danh Sách Nhóm</h1>
-                <a href="{{ route('groups.create') }}" class="btn btn-primary mb-3">Tạo Nhóm</a>
+            <div class="col-md-6" style=" background-color: #fff;">
+                <div style="display: flex; align-items: center; border-bottom: 3px solid #e88b2d; background-color: #fff;">
+                    <h1 style="margin: 24px 0;">Danh Sách Nhóm</h1>
+                    <a href="{{ route('groups.create') }}" class="btn btn-primary mb-3"
+                        style="padding: 4px 24px;   margin-left: auto;">
+                        <img width="24" height="24" src="https://img.icons8.com/sf-black/32/FFFFFF/plus-math.png"
+                            alt="plus-math" /> </a>
+                </div>
 
-                <div class="row">
+                <div class="row" style="display: grid; ">
                     @foreach ($groups as $group)
                         <div class="col-md-6 mb-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ $group->name }}</h5>
-                                    <p class="card-text">{{ $group->description }}</p>
-                                    <a href="{{ route('groups.show', $group->id) }}" class="btn btn-primary">Xem Chi
-                                        Tiết</a>
-                                    @if (!$group->isMember(Auth::user()))
-                                        <form action="{{ route('groups.join', $group->id) }}" method="post" class="mt-2">
-                                            @csrf
-                                            <button type="submit" class="btn btn-success">Tham Gia Nhóm</button>
-                                        </form>
-                                    @endif
+                            <div class="card" style=" width: 555px;">
+                                <div class="card-body" style="display: flex; align-items: center;">
+                                    <div>
+                                        <h3 class="card-title">{{ $group->name }}</h3>
+                                        <p class="card-text">{{ $group->description }}</p>
+                                    </div>
+
+                                    <div style="margin-left: auto; display: flex;">
+                                        <a style="  
+                                             
+                                        border-radius: 999px;
+                                        width: 42px;
+                                        height: 42px;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;"
+                                            href="{{ route('groups.show', $group->id) }}" class="btn btn-primary"><img
+                                                width="12" height="12"
+                                                src="https://img.icons8.com/ios-filled/32/FFFFFF/long-arrow-right.png"
+                                                alt="long-arrow-right" /></a>
+                                        @if (!$group->isMember(Auth::user()))
+                                            @if ($group->users()->where('user_id', Auth::user()->id)->where('approved', false)->exists())
+                                                <form action="{{ route('groups.cancelJoinRequest', $group->id) }}"
+                                                    method="post" class="mt-2">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button
+                                                        style="   
+                                                        margin-left: 4px;      
+                                                        border-radius: 999px;
+                                                        width: 42px;
+                                                        height: 42px;
+                                                        display: flex;
+                                                        align-items: center;
+                                                        justify-content: center;"
+                                                        type="submit" class="btn btn-danger">
+                                                        <img width="12" height="12"
+                                                            src="https://img.icons8.com/windows/12/FFFFFF/delete-sign.png"
+                                                            alt="delete-sign" />
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <form action="{{ route('groups.join', $group->id) }}" method="post"
+                                                    class="mt-2">
+                                                    @csrf
+                                                    <button
+                                                        style="   
+                                                        margin-left: 4px;      
+
+                                                        border-radius: 999px;
+                                                        width: 42px;
+                                                        height: 42px;
+                                                        display: flex;
+                                                        align-items: center;
+                                                        justify-content: center;"
+                                                        type="submit" class="btn btn-success">
+                                                        <img width="22" height="22"
+                                                            src="https://img.icons8.com/external-roondy-lafs/64/FFFFFF/external-add-group-communications-roondy-lafs.png"
+                                                            alt="external-add-group-communications-roondy-lafs" />
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        @endif
+                                    </div>
+
                                 </div>
                             </div>
                         </div>

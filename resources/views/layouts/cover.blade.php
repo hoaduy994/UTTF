@@ -4,7 +4,7 @@
         <a href="{{ $user->getAvatarImagePath() }}" data-lightbox="profilePhoto" data-title='Profile Picture'><img align="left" class="fb-image-profile thumbnail" style="width:115px" src="{{ $user->getAvatarImagePath() }}"/></a>
           
         <div class="fb-profile-text">
-          	<h2 class="pull-left">{{ $user->getFullName() }} @if ($user->id == Auth::user()->id) <a href="{{ route('profile.edit', ['id' => Auth::user()->id]) }}"><i class="fa fa-pencil" aria-hidden="true"></i></a> @endif</h2>
+          	<h2 class="pull-left">{{ $user->getFullName() }} @if ($user->id == Auth::user()->id) <a href="{{ route('profile.edit', ['id' => Auth::user()->id]) }}"><i class="fa fa-pencil" style="font-size:75%;" aria-hidden="true"></i></a> @endif</h2>
             <ul class="nav nav-pills pull-right">
 				<li role="presentation" @if ($active == 'timeline') class="active" @endif><a href="{{ route('profile.view', ['id' => $user->id]) }}"><i class="fa fa-lg fa-bars" aria-hidden="true"></i> Dòng thời gian</a></li>
 
